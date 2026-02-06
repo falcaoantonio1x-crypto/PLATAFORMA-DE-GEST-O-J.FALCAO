@@ -1,1 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Plataforma Fiscal — MVP</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOCK -->
+<div id="lock" class="lock">
+  <div class="lockBox">
+    <div class="lockHeader">
+      <div>
+        <div class="lockTitle">Acesso restrito</div>
+        <div class="lockDesc">Informe a senha para acessar a plataforma.</div>
+      </div>
+      <span class="badge">Amostra 1 min</span>
+    </div>
+
+    <div class="lockMeta" id="lockMeta">
+      A amostra libera por 1 minuto e pode ser usada uma única vez por navegador. Após isso, somente acesso autorizado.
+    </div>
+
+    <input id="senha" type="password" class="input" placeholder="Senha de acesso" autocomplete="current-password"/>
+
+    <div class="lockActions">
+      <button id="btnEntrar" class="btn">Entrar</button>
+      <button id="btnBloquear" class="btn btnGhost" type="button">Bloquear</button>
+    </div>
+
+    <div id="lockErr" class="lockErr"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app" class="wrap">
+  <h1>Plataforma Fiscal — Diagnóstico + Simulações + Proposta</h1>
+
+  <div class="grid">
+    <!-- ENTRADA -->
+    <section class="card">
+      <h2>Dados do caso</h2>
+
+      <label>Empresa</label>
+      <input id="empresa" class="input" placeholder="Razão social">
+
+      <label>CNPJ/CPF</label>
+      <input id="doc" class="input" placeholder="00.000.000/0000-00">
+
+      <label>Natureza do débito</label>
+      <select id="natureza" class="input">
+        <option value="PGFN">PGFN / Dívida Ativa</option>
+        <option value="RFB">Receita Federal (não inscrito)</option>
+        <option value="ESTADUAL">Estadual</option>
+        <option value="MUNICIPAL">Municipal</option>
+        <option value="PREVIDENCIARIO">Previdenciário</option>
+      </select>
+
+      <label>Valor estimado da dívida (R$)</label>
+      <input id="valorDivida" class="input" placeholder="Ex.: 525.762,58">
+
+      <div class="row">
+        <label class="check"><input id="execucao" type="checkbox"> Execução fiscal em andamento</label>
+        <label class="check"><input id="bloqueio" type="checkbox"> Bloqueio / SISBAJUD iminente/ocorrido</label>
+        <label class="check"><input id="protesto" type="checkbox"> Protesto / restrição</label>
+        <label class="check"><input id="impedimento" type="checkbox"> Impedimento de certidão / licitar</label>
+        <label class="check"><input id="simples" type="checkbox"> Necessita Simples / reenquadramento</label>
+        <label class="check"><input id="parcRescind" type="checkbox"> Parcelamento rescindido</label>
+      </div>
+
+      <h2 style="margin-top:16px;">Parâmetros (garantia)</h2>
+      <div class="row2">
+        <div>
+          <label>% a garantir</label>
+          <input id="pctGarantia" class="input" value="100">
+        </div>
+        <div>
+          <label>Taxa mensal (% a.m.)</label>
+          <input id="taxaGarantia" class="input" value="0,36">
+        </div>
+      </div>
+
+      <div class="actionsBottom">
+        <button id="btnAnalisar" class="btn">Analisar + Simular</button>
+        <button id="btnImprimir" class="btn">Gerar / Imprimir proposta</button>
+        <button id="btnLimpar" class="btn btnGhost">Limpar</button>
+      </div>
+
+      <div class="hint">
+        O sistema entrega uma análise técnica preliminar e alternativas. Não é parecer jurídico.
+      </div>
+    </section>
+
+    <!-- SAÍDA -->
+    <section class="card">
+      <h2>Resultado</h2>
+
+      <div class="kpi">
+        <div class="t">Risco</div>
+        <div class="v" id="outRisco">—</div>
+      </div>
+
+      <div class="kpi">
+        <div class="t">Estratégia recomendada</div>
+        <div class="v" id="outEstrategia">—</div>
+      </div>
+
+      <div class="kpi">
+        <div class="t">Resumo (diagnóstico)</div>
+        <div class="p" id="outResumo">—</div>
+      </div>
+
+      <div class="kpi">
+        <div class="t">Alternativas</div>
+        <div class="p" id="outAlternativas">—</div>
+      </div>
+
+      <h2 style="margin-top:16px;">Simulação — Garantia (12 meses)</h2>
+      <div class="kpi"><div class="t">Valor garantido</div><div class="v" id="outGarantido">—</div></div>
+      <div class="kpi"><div class="t">Mensal (total)</div><div class="v" id="outMensal">—</div></div>
+      <div class="kpi"><div class="t">Assessoria (10%)</div><div class="v" id="outAss">—</div></div>
+      <div class="kpi"><div class="t">Aluguel (90%)</div><div class="v" id="outAlug">—</div></div>
+      <div class="kpi"><div class="t">Total 12 meses</div><div class="v" id="outTotal12">—</div></div>
+
+      <h2 style="margin-top:16px;">Simulação — Parcelamento (placeholder)</h2>
+      <div class="kpi"><div class="t">Entrada (5%)</div><div class="v" id="outEntrada">—</div></div>
+      <div class="kpi"><div class="t">Parcela mensal estimada</div><div class="v" id="outParcela">—</div></div>
+      <div class="hint">No Modelo 1, parcelamento é estimativo. Depois tu pluga regras por edital.</div>
+    </section>
+  </div>
+</div>
+
+<!-- IMPRESSÃO -->
+<div id="printArea" class="printArea">
+  <div class="pTitle">Proposta — Estratégia Fiscal (12 meses)</div>
+  <div class="pSub" id="pMeta">—</div>
+
+  <div class="pBox">
+    <div class="pLbl">Empresa</div><div class="pVal" id="pEmpresa">—</div>
+    <div class="pLbl">Documento</div><div class="pVal" id="pDoc">—</div>
+    <div class="pLbl">Natureza</div><div class="pVal" id="pNatureza">—</div>
+    <div class="pLbl">Dívida informada</div><div class="pVal" id="pDivida">—</div>
+    <div class="pLbl">Estratégia recomendada</div><div class="pVal" id="pEstrategia">—</div>
+  </div>
+
+  <div class="pBox">
+    <div class="pLbl">Mensal da garantia</div><div class="pVal" id="pMensal">—</div>
+    <div class="pLbl">Assessoria promocional (10%)</div><div class="pVal" id="pAss">—</div>
+    <div class="pLbl">Aluguel de bem (90%)</div><div class="pVal" id="pAlug">—</div>
+    <div class="pLbl">Total do contrato (12 meses)</div><div class="pVal" id="pTotal12">—</div>
+  </div>
+
+  <div class="pBox">
+    <div class="pLbl" style="font-weight:700;margin-bottom:6px;">Informação legal (resumo)</div>
+    <div class="pLegal">
+      Em execução judicial, a regularização do débito normalmente ocorre por: (i) pagamento; (ii) parcelamento/negociação;
+      ou (iii) garantia do juízo com bem idôneo (ex.: imóvel, seguro-garantia ou fiança bancária), conforme aceitação do juízo.
+      Esta proposta possui caráter informativo e comercial, não substituindo análise do caso concreto nem implicando garantia de resultado.
+    </div>
+  </div>
+
+  <div class="pBox">
+    <b>José Falcão</b><br>
+    Especialista em Negociação Regulamentar e Risco Operacional<br>
+    Grupo Villela – Gestão Empresarial<br>
+    Contato: (51) 9 9203-9175
+  </div>
+</div>
+
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
 
