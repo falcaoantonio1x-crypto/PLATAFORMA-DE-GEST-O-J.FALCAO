@@ -1,0 +1,7 @@
+{
+  "GARANTIA_PRIORITARIA": "Cenário com execução e indicativo de constrição. Estratégia recomendada: garantir o juízo para controlar risco e manter previsibilidade, com viabilização de negociação futura.",
+  "GARANTIA_PARA_PREVISIBILIDADE": "Cenário com execução e restrições operacionais. Estratégia recomendada: garantia do juízo para mitigar atos constritivos e manter regularidade, combinando com negociação.",
+  "REENQUADRAMENTO_SIMPLES": "Há urgência operacional (Simples/regularidade) e histórico de parcelamento rescindido. Estratégia recomendada: negociação com plano objetivo de regularização e medidas complementares conforme caso.",
+  "PARCELAMENTO_OU_TRANSACAO": "Débito sem execução ativa: primeira linha é parcelamento/negociação. Alternativa: aguardar edital quando houver perspectiva de melhora de condições.",
+  "DEFAULT": "Análise técnica preliminar baseada nas informações prestadas. Recomenda-se validar documentos e situação processual para confirmar a melhor estratégia."
+}
